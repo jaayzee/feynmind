@@ -2,8 +2,8 @@
 import React from 'react';
 
 const StateContext = React.createContext({
-    search: null,
-    setSearch: () => {},
+    topic: null,
+    setTopic: () => {},
     info: null,
     setInfo: () => {},
     method: null,
@@ -17,6 +17,8 @@ const StateContext = React.createContext({
     currName: null,
     setCurrName: () => {},
     currInfo: null,
+    setCurrObj: () => {},
+    currObj: null,
     setCurrInfo: () => {},
     ready: null,
     setReady: () => {},

@@ -11,7 +11,7 @@ const EndScene = () => {
         <>
         {completed ? (
             <>
-            REMEMBER TO SUMMARIZE :|
+            Good Job! Remember To Summarize What You've Learned!
             <br/>
             <br/>
             <Button onClick={() => {

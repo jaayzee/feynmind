@@ -3,7 +3,7 @@ import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
 import '../css/globalStyles.css';
 
-const generateResponse = async (model, search, info, answer) => {
+const generateResponse = async (model, subtopic, baseAnswer, givenAnswer) => {
     const chatResponse = await model.chat.completions.create({
         messages: [
             {
@@ -12,15 +12,16 @@ const generateResponse = async (model, search, info, answer) => {
             },
             {
                 role: "system",
-                content: `Compare these two descriptions for the subtopic: `+ search +`: Base answer: `+ info +` Given answer: `+ answer + `For
+                content: `Compare these two descriptions for the subtopic: `+ subtopic +`: Base answer: `+ baseAnswer +` Given answer: `+ givenAnswer + `For
                  the comparison, write the properties “clarity”, “correctness”, “feedback”, and “passing” for how the given answer compares to the base answer ONLY.
                 “Clarity” - give a rating on the given answer’s clarity with low, medium or high in comparison to the base answer
                 “Correctness” - give a rating on the given answer’s correctness with low, medium or high in comparison to the base answer
                 “Feedback” - give any useful critiques on how to improve the given answer to better match the base answer
-                “Passing” - give a true or false on if the given answer is sufficient to the understanding of the subtopic.`
+                “Passing” - give a true or false on if the given answer is sufficient to the understanding of the subtopic based upon the "clarity" and "correctness" score,
+                For example, a low clarity score and low correctness score will return a false passing, while a high clarity and high correctness will return true for passing.`
             },
         ],
-        //{ "baseAnswer": { "description": "Italian culture involves various aspects such as art, food, fashion, and music. It is known for its rich history, famous landmarks, and traditional values." }, "clarity": "low", "correctness": "low", "feedback": "The given answer is not clear and lacks depth compared to the base answer. It only touches on a few food items like pasta, spaghetti, and meatballs without providing a comprehensive view of Italian culture.", "passing": false }
+
         model: "gpt-3.5-turbo-0125",
         response_format: {type : "json_object"},
     })
@@ -29,13 +30,10 @@ const generateResponse = async (model, search, info, answer) => {
     return response;
 }
 
-const FeedbackForU = () => {
-    const { search } = useContext(StateContext);
+const GenFeedback = () => {
     const { answer } = useContext(StateContext);
     const { openAI } = useContext(StateContext);
-    const { info } = useContext(StateContext);
-    const { currInfo, setCurrInfo } = useContext(StateContext);
-    const { currName, setCurrName } = useContext(StateContext);
+    const { currObj, setCurrObj } = useContext(StateContext);
     const { reviewMount, setReviewMount } = useContext(StateContext);
     const { topicsArray, setTopicsArray} = useContext(StateContext);
     const { ready, setReady } = useContext(StateContext);
@@ -43,11 +41,12 @@ const FeedbackForU = () => {
     
     const [review, setReview] = useState('');
     const [continueMount, setContinueMount] = useState(false);
+    const [ prevObj, setPrevObj ] = useState();
 
     useEffect(() => {
         if(!reviewMount){
             const fetchReview = async () => {
-                const result = await generateResponse(openAI, search, currInfo, answer);
+                const result = await generateResponse(openAI, currObj.name, currObj.answer, answer);
                 setReview(result);
             };
         
@@ -55,17 +54,18 @@ const FeedbackForU = () => {
         }
     }, [answer])
 
-    let temp = [];
     useEffect(() => {
         if(review.feedback) {
+            let temp = [];
             setContinueMount(true);
             if (!review.passing) {
                 temp = topicsArray;
                 temp.push(temp.shift());
                 setTopicsArray(temp);
-                setCurrName(topicsArray[0].name);
-                setCurrInfo(topicsArray[0].answer);
+                setPrevObj(currObj)
+                setCurrObj(topicsArray[0])
             } else {
+                // If last array element, move toward end screen
                 if (topicsArray.length == 1) {
                     setCompleted(true);
                     setContinueMount(false);
@@ -73,8 +73,8 @@ const FeedbackForU = () => {
                     temp = topicsArray;
                     temp.shift();
                     setTopicsArray(temp);
-                    setCurrName(topicsArray[0].name);
-                    setCurrInfo(topicsArray[0].answer);
+                    setPrevObj(currObj)
+                    setCurrObj(topicsArray[0])
                 }
             }
         }
@@ -96,7 +96,7 @@ const FeedbackForU = () => {
                 !review.passing ? (
                     <>
                         <br/>
-                        <b>Study Up: </b> {currInfo}
+                        <b>Study Up: </b> {prevObj.answer}
                     </>
                 ) : (<></>)
                 }
@@ -114,4 +114,4 @@ const FeedbackForU = () => {
     )
 };
 
-export default FeedbackForU;
+export default GenFeedback;
