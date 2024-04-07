@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
+import StateContext from '../StateContext';
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
@@ -22,22 +23,23 @@ const informationBroker = async (inputData) => {
       response_format: { type: "json_object" },
     
   })
-  const answer = (JSON.parse(chatCompletion.choices[0].message.content))
+  const answer = (chatCompletion.choices[0].message.content) // add JSON.parse
   return answer;
 };
 
 const Subject = () => {
+  const { setInfo } = useContext(StateContext);
+  const { setMethod } = useContext(StateContext);
   const [search, setSearch] = useState('');
   const [text, setText] = useState('');
   const [mount, setMount] = useState(true);
-  const [information, setInformation] = useState();
-  const [method, setMethod] = useState('');
+  const [methodMount, setMethodMount] = useState(true);
 
   useEffect(() => {
     if (!mount) {
       const fetchInformation = async () => {
-        const info = await informationBroker(search);
-        setInformation(info);
+        const data = await informationBroker(search);
+        setInfo(data);
       };
 
       fetchInformation();
@@ -59,29 +61,40 @@ const Subject = () => {
   };
 
   const handleChoice = (inputString) => {
-    setMethod(inputString)
+    setMethod(inputString);
+    setMethodMount(false);
   }
 
   return (
     <>
         { mount ? 
-            (<Container>
-            I want to learn {}
-            <Form.Control
-                type="text"
-                placeholder="subject" 
-                onChange = {(e) => setText(e.target.value)}
-                onKeyDown={handleText}
-            />
-            <Button onClick={handleButtonClick}>Feynman Me Up</Button>
-            <p>You entered: {search}</p>
-            </Container>)
+            (
+            <Container>
+              I want to learn about {}
+              <Form.Control
+                  type="text"
+                  placeholder="subject" 
+                  onChange = {(e) => setText(e.target.value)}
+                  onKeyDown={handleText}
+              />
+              <Button onClick={handleButtonClick}>Feynman Me Up</Button>
+              <p>You entered: {search}</p>
+            </Container>
+            )
             : (<>
-            Would you like to review with {}
-            <Button
-            onClick={() => handleChoice('text')}>text</Button> or <Button
-            onClick={() => handleChoice('speech')}>speech</Button>?
-            </>)}
+                { methodMount ? 
+                  (<>
+                    Would you like to review with {}
+                    <Button
+                    onClick={() => handleChoice('text')}>text</Button> or <Button
+                    onClick={() => handleChoice('speech')}>speech</Button>?
+                    </>
+                  )
+                  : 
+                  (<></>)
+                }
+            </>)
+        }
     </>
     
   );
