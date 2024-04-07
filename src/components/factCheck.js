@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
+import '../css/globalStyles.css';
 
 const FactCheck = () => {
     const { search } = useContext(StateContext);
@@ -15,6 +16,7 @@ const FactCheck = () => {
     const { ready, setReady } = useContext(StateContext);
 
     const [text, setText] = useState('');
+    const [typing, setTyping] = useState(false);
 
     const temp = [];
     useEffect(() => {
@@ -81,18 +83,30 @@ const FactCheck = () => {
         }
     };
 
+    const handleKeyDown = () => {
+        setTyping(true);
+      }
+
+    const handleKeyUp = () => {
+        setTyping(false);
+      }
+
     if (method == 'text' || method == 'speech') {
         if (method == 'text') {
             return (<> 
                 {reviewMount && ready ? 
                 (
-                    <Container>
-                        <p>{search}</p>
+                    <div className="wrapper">
+                    <Container className="stack">
+                        <h3>{search}</h3>
                         Explain {currName} {}
                         <br/>
                         <Form.Control
+                            className={`${typing ? 'move-down' : 'move-up' }`}
                             as="textarea" aria-label="With textarea" 
                             onChange = {(e) => setText(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            onKeyUp={handleKeyUp}
                         />
                         <br/>
                         <Button onClick={() => {
@@ -100,6 +114,7 @@ const FactCheck = () => {
                             setReady(false);
                             }}>I'm Done</Button>
                     </Container>
+                    </div>
                 ) 
                 : 
                 (<></>)

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
+import '../css/globalStyles.css';
 
 const EndScene = () => {
     const { completed, setCompleted} = useContext(StateContext);
@@ -10,7 +11,8 @@ const EndScene = () => {
         <>
         {completed ? (
             <>
-            WINNNERRRR
+            REMEMBER TO SUMMARIZE :|
+            <br/>
             <br/>
             <Button onClick={() => {
                 setMount(true); 

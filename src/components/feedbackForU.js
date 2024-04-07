@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Children, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
+import '../css/globalStyles.css';
 
 const generateResponse = async (model, search, info, answer) => {
     const chatResponse = await model.chat.completions.create({
@@ -81,33 +82,35 @@ const FeedbackForU = () => {
 
     console.log(topicsArray);
     return(
-        <>
+        <div className="wrapper-sides">
         { continueMount ? 
-            (<>
-                Feedback: {review.feedback}
+            (<div className="stack">
+                <b>Feedback: </b> {review.feedback}
                 <br/>
-                Clarity: {review.clarity}
+                <b>Clarity: </b> {review.clarity}
                 <br/>
-                Correctness: {review.correctness}
+                <b>Correctness: </b> {review.correctness}
                 <br/>
-                Passing: {review.passing ? ("TRUE") : ("FALSE")}
+                <b>Passing: </b> {review.passing ? ("TRUE") : ("FALSE")}
                 {
                 !review.passing ? (
                     <>
                         <br/>
-                        Study Up: {currInfo}
+                        <b>Study Up: </b> {currInfo}
                     </>
                 ) : (<></>)
                 }
+                <br/>
+                <br/>
                 <br/>
                 <Button onClick={() => {
                     setContinueMount(false); 
                     setReviewMount(true);
                     setReady(true);
                     }}> Continue </Button>
-            </>): (<></>)
+            </div>): (<></>)
         }
-        </>
+        </div>
     )
 };
 

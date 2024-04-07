@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
 import OpenAI from 'openai'
+import '../css/globalStyles.css';
+import { isElementType } from "@testing-library/user-event/dist/utils";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser:true, // This is the default and can be omitted
@@ -38,6 +40,7 @@ const Subject = () => {
   
   const { search, setSearch } = useContext(StateContext);
   const [text, setText] = useState('');
+  const [typing, setTyping] = useState(false);
 
   useEffect(() => {
     if (!mount) {
@@ -49,7 +52,9 @@ const Subject = () => {
       fetchInformation();
     }
   }, [search, mount]);
+
   const handleText = async(e) => {
+    setTyping(true);
     if (e.key === 'Enter' && text != '') {
         e.preventDefault();
         setSearch(text);
@@ -57,6 +62,10 @@ const Subject = () => {
         setMethodMount(true);
     }
   };
+
+  const handleKeyUp = () => {
+    setTyping(false);
+  }
 
   const handleButtonClick = async() => {
     if (text != '') {
@@ -73,18 +82,17 @@ const Subject = () => {
 
   return (
     <>
-    <h1> 
-      TITLE
-    </h1>
         { mount ? 
             (
-            <Container>
+            <Container className="block">
               I want to learn about {}
               <Form.Control
-                  type="text"
-                  placeholder="subject" 
-                  onChange = {(e) => setText(e.target.value)}
-                  onKeyDown={handleText}
+                className={`${typing ? 'move-down' : 'move-up' }`}
+                type="text"
+                placeholder="subject" 
+                onChange = {(e) => setText(e.target.value)}
+                onKeyDown={handleText}
+                onKeyUp={handleKeyUp}
               />
               {} {}
               <Button onClick={handleButtonClick}>Feynman Me Up</Button>
@@ -93,12 +101,12 @@ const Subject = () => {
             : (<></>)
         }
         { methodMount ? 
-                  (<>
+                  (<div className="block">
                     Would you like to review with {}
                     <Button
                     onClick={() => handleChoice('text')}>text</Button> or <Button
                     onClick={() => handleChoice('speech')}>speech</Button>?
-                    </>
+                    </div>
                   )
                   : 
                   (<></>)
