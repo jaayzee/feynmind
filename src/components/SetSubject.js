@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
-import OpenAI from 'openai'
 import '../css/globalStyles.css';
 import { isElementType } from "@testing-library/user-event/dist/utils";
 
-const openai = new OpenAI({
-  apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser:true, // This is the default and can be omitted
-});
-
-const informationBroker = async (model, inputData) => {
+const generateSubtopics = async (model, topic) => {
   const chatCompletion = await model.chat.completions.create({
       messages: [
           {
@@ -18,9 +13,9 @@ const informationBroker = async (model, inputData) => {
           },
           { 
               role: "system", 
-              content: `Generate a list of subtopics for the main topic `+ inputData +` and their detailed answers. Include the properties, “name”, and “answer” ONLY. 
+              content: `Generate a list of subtopics for the main topic `+ topic +` and their detailed answers. Include the properties, “name”, and “answer” ONLY. 
               “name” -  create the subtopic name or title
-              “answer” - generate a detailed answer to the corresponding subtopic name or title.`
+              “answer” - generate a detailed answer to the corresponding subtopic name or title, use less than 75 words`
           },
           ],
       model: "gpt-3.5-turbo-0125",
@@ -31,33 +26,33 @@ const informationBroker = async (model, inputData) => {
   return answer;
 };
 
-const Subject = () => {
+const SetSubject = () => {
   const { setInfo } = useContext(StateContext);
   const { setMethod } = useContext(StateContext);
   const { openAI } = useContext(StateContext);
   const { mount, setMount } = useContext(StateContext);
   const { methodMount, setMethodMount } = useContext(StateContext);
   
-  const { search, setSearch } = useContext(StateContext);
+  const { topic, setTopic } = useContext(StateContext);
   const [text, setText] = useState('');
   const [typing, setTyping] = useState(false);
 
   useEffect(() => {
     if (!mount) {
-      const fetchInformation = async () => {
-        const data = await informationBroker(openAI, search);
-        setInfo(data);
-      };
+          const fetchInformation = async () => {
+            const data = await generateSubtopics(openAI, topic);
+            setInfo(data);
+        };
 
       fetchInformation();
     }
-  }, [search, mount]);
+  }, [topic, mount]);
 
   const handleText = async(e) => {
     setTyping(true);
-    if (e.key === 'Enter' && text != '') {
+    if (e.key === 'Enter' && text !== '') {
         e.preventDefault();
-        setSearch(text);
+        setTopic(text);
         setMount(false);
         setMethodMount(true);
     }
@@ -68,8 +63,8 @@ const Subject = () => {
   }
 
   const handleButtonClick = async() => {
-    if (text != '') {
-      setSearch(text);
+    if (text !== '') {
+      setTopic(text);
       setMount(false);
       setMethodMount(true);
     }
@@ -89,13 +84,13 @@ const Subject = () => {
               <Form.Control
                 className={`${typing ? 'move-down' : 'move-up' }`}
                 type="text"
-                placeholder="OBSESSION" 
+                placeholder="SUBJECT" 
                 onChange = {(e) => setText(e.target.value)}
                 onKeyDown={handleText}
                 onKeyUp={handleKeyUp}
               />
               {} {}
-              <Button onClick={handleButtonClick}>FEYNMAN ME UP</Button>
+              <Button onClick={handleButtonClick}>Generate Feynman Process</Button>
             </Container>
             )
             : (<></>)
@@ -116,4 +111,4 @@ const Subject = () => {
   );
 };
 
-export default Subject;
+export default SetSubject;
