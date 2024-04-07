@@ -1,5 +1,34 @@
 .App {
   text-align: center;
+  background-image: linear-gradient(
+    -45deg,
+    #000000,
+    #0f0f0f,
+    #1c1c1c,
+    #282828,
+    #303030,
+    #3f3f3f
+  );
+  background-size: 400%;
+  animation: bg-animation 5s infinite alternate;
+}
+
+@keyframes bg-animation {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+
+.mainGuy {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  border-radius: 1rem;
 }
 
 .App-logo {
@@ -8,8 +37,6 @@
 }
 
 .App-header {
-  
-  background-color: #1b1b1b;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

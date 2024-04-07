@@ -89,13 +89,13 @@ const Subject = () => {
               <Form.Control
                 className={`${typing ? 'move-down' : 'move-up' }`}
                 type="text"
-                placeholder="subject" 
+                placeholder="OBSESSION" 
                 onChange = {(e) => setText(e.target.value)}
                 onKeyDown={handleText}
                 onKeyUp={handleKeyUp}
               />
               {} {}
-              <Button onClick={handleButtonClick}>Feynman Me Up</Button>
+              <Button onClick={handleButtonClick}>FEYNMAN ME UP</Button>
             </Container>
             )
             : (<></>)

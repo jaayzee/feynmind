@@ -5,9 +5,9 @@ body {
 }
 
 h1 {
-    position: absolute;
+    position: relative;
     top: 0;
-    color:#D6B4FC;
+    color: #D6B4FC;
 }
 
 b {
@@ -40,17 +40,25 @@ b {
 }
 
 .block {
+    background-color: white;
+    color: black;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 1rem;
+    padding: 2rem;
+    border-radius: 1rem;
 }
 
 .stack {
+    color: black;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    
 }
 
 .wrapper {
@@ -58,7 +66,6 @@ b {
 }
 
 .wrapper-sides {
-    margin-top: 8rem;
     margin-bottom: 5rem;
     padding-left: 2rem;
     padding-right: 2rem;
