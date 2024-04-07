@@ -18,6 +18,7 @@ const FactCheck= () => {
                     />
                 </Container>
             )
+        } else {
             
         }
     } else {
