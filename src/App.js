@@ -48,7 +48,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1 className="mainGuy"> 
-        STUDEYN
+        FeynMind
         </h1>
         <div>
           <SetSubject/>
