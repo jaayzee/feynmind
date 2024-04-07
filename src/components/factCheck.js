@@ -109,7 +109,8 @@ const FactCheck = () => {
                             onKeyUp={handleKeyUp}
                         />
                         <br/>
-                        <Button onClick={() => {
+                        <Button 
+                            onClick={() => {
                             handleButtonClick(); 
                             setReady(false);
                             }}>I'm Done</Button>
@@ -125,7 +126,7 @@ const FactCheck = () => {
                 <>
                 {reviewMount && ready ? 
                     (
-                        <Container>
+                        <Container className="stack">
                             <p>{search}</p>
                             Explain {currName} {}
                             <br/>
@@ -135,12 +136,13 @@ const FactCheck = () => {
                             <div>
                                 <h3>Transcription:</h3>
                                 <p>{transcription}</p>
+                                <br/>
+                                <Button 
+                                    onClick={() => {
+                                    handleButtonClick(); 
+                                    setReady(false);
+                                }}>I'm Done</Button>
                             </div>)}
-                            <br/>
-                            <Button onClick={() => {
-                            handleButtonClick(); 
-                            setReady(false);
-                            }}>I'm Done</Button>
                         </Container>
                     )
                     :
