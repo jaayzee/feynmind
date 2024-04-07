@@ -6,6 +6,10 @@ const StateContext = React.createContext({
   setInfo: () => {},
   method: null,
   setMethod: () => {},
+  openAI: null,
+  setOpenAI: () => {},
+  answer: null,
+  setAnswer: () => {},
 });
 
 export default StateContext;

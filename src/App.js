@@ -10,11 +10,15 @@ import { useState } from 'react';
 function App() {
   const [sharedInfo, setSharedInfo] = useState();
   const [sharedMethod, setSharedMethod] = useState();
+  const [sharedOpenAI, setSharedOpenAI] = useState();
+  const [sharedAnswer, setSharedAnswer] = useState();
 
   return (
     <StateContext.Provider value={{ 
       info: sharedInfo, setInfo: setSharedInfo,
       method: sharedMethod, setMethod: setSharedMethod,
+      openAI: sharedOpenAI, setOpenAI: setSharedOpenAI,
+      answer: sharedAnswer, setAnswer: setSharedAnswer,
       }}>
     <div className="App">
       <header className="App-header">

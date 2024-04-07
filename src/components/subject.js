@@ -30,6 +30,7 @@ const informationBroker = async (inputData) => {
 const Subject = () => {
   const { setInfo } = useContext(StateContext);
   const { setMethod } = useContext(StateContext);
+  const { setOpenAI } = useContext(StateContext);
   const [search, setSearch] = useState('');
   const [text, setText] = useState('');
   const [mount, setMount] = useState(true);
@@ -37,6 +38,7 @@ const Subject = () => {
 
   useEffect(() => {
     if (!mount) {
+      setOpenAI(openai);
       const fetchInformation = async () => {
         const data = await informationBroker(search);
         setInfo(data);
