@@ -40,7 +40,7 @@ jobs:
       - name: Build
         run: npm run build
         env: 
-          VITE_INS_TOKEN: ${{ secrets.VITE_INS_TOKEN }}
+          REACT_APP_OPENAI_API_KEY: ${{ secrets.REACT_APP_OPENAI_API_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
