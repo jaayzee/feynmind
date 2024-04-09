@@ -1,4 +1,3 @@
-import logo from './assets/logo.svg';
 import StateContext from './StateContext';
 import SetSubject from './components/SetSubject';
 import InputAnswer from './components/InputAnswer';

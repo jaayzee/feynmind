@@ -7,7 +7,7 @@ const InputAnswer = () => {
     const { topic } = useContext(StateContext);
     const { info } = useContext(StateContext);
     const { method } = useContext(StateContext);
-    const { answer, setAnswer } = useContext(StateContext);
+    const { setAnswer } = useContext(StateContext);
     const { reviewMount, setReviewMount } = useContext(StateContext);
     //const { currName, setCurrName } = useContext(StateContext);
     //const { currInfo, setCurrInfo } = useContext(StateContext);

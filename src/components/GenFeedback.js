@@ -66,7 +66,7 @@ const GenFeedback = () => {
                 setCurrObj(topicsArray[0])
             } else {
                 // If last array element, move toward end screen
-                if (topicsArray.length == 1) {
+                if (topicsArray.length === 1) {
                     setCompleted(true);
                     setContinueMount(false);
                 } else {
