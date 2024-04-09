@@ -24,8 +24,6 @@ const StateContext = React.createContext({
     setReady: () => {},
     completed: null,
     setCompleted: () => {},
-    mount: null,
-    setMethod: () => {},
     methodMount: null,
     setMethodMount: () => {},
 });

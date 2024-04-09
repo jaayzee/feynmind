@@ -1,5 +1,5 @@
-import React, { useEffect, useState, Children, useContext } from "react";
-import { Container, Button, Form } from "react-bootstrap";
+import React, { useEffect, useState, useContext } from "react";
+import { Button } from "react-bootstrap";
 import StateContext from '../StateContext';
 import '../css/globalStyles.css';
 
@@ -36,8 +36,8 @@ const GenFeedback = () => {
     const { currObj, setCurrObj } = useContext(StateContext);
     const { reviewMount, setReviewMount } = useContext(StateContext);
     const { topicsArray, setTopicsArray} = useContext(StateContext);
-    const { ready, setReady } = useContext(StateContext);
-    const { completed, setCompleted} = useContext(StateContext);
+    const { setReady } = useContext(StateContext);
+    const { setCompleted} = useContext(StateContext);
     
     const [review, setReview] = useState('');
     const [continueMount, setContinueMount] = useState(false);

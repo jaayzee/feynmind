@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import StateContext from '../StateContext';
 import '../css/globalStyles.css';
-import { isElementType } from "@testing-library/user-event/dist/utils";
 
 const generateSubtopics = async (model, topic) => {
   const chatCompletion = await model.chat.completions.create({
